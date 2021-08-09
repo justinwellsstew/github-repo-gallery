@@ -1,8 +1,9 @@
 // const and variables
 const username = "justinwellsstew";
 const overview = document.querySelector(".overview");
+const repoList = document.querySelector(".repo-list");
 
-
+////Get user bio info //////////////////////////////////
 const getGitHubData = async function(){
     let data = await fetch(`https://api.github.com/users/${username}`);
     let githubRecords =  await data.json();
@@ -23,3 +24,23 @@ const displayFetchedData = function(data){
 }
 
 getGitHubData();
+
+////Get user repo info //////////////////////////////////
+
+const getRepoInfo = async function(){
+    let data = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    let gitHubRepoRecords = await data.json();
+    console.log(gitHubRepoRecords);
+    displayRepoData(gitHubRepoRecords);
+}
+
+const displayRepoData = function(repos){
+    for(const repo of repos){
+        let li = document.createElement("li");
+        li.className = "repo";
+        li.innerHTML = `<h3>${repo.name}</h3>`;
+        repoList.append(li);                
+    }
+}
+
+getRepoInfo();
